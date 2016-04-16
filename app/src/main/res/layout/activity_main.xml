@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="vlillealert.jeremsamson.com.vlillealert.MainActivity">
+    tools:context=".SplashActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -20,10 +20,10 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
         <ListView
-            android:id="@+id/list"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            />
+            android:id="@+id/listViewStations"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </ListView>
 
     </android.support.design.widget.AppBarLayout>
 
