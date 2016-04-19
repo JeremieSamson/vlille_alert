@@ -21,7 +21,7 @@ import vlillealert.jeremsamson.com.vlillealert.Bean.Station;
 
 public class MainActivity extends AppCompatActivity implements ListView.OnItemClickListener {
 
-    public static final String BASE_URL = "http://ns378858.ip-5-196-69.eu/app.php/";
+    public static final String BASE_URL = "http://ns378858.ip-5-196-69.eu/app.php";
     //public static final String BASE_URL = "http://ns378858.ip-5-196-69.eu/app.php/stations?_format=json";
 
     //Strings to bind with intent will be used to send data to other activity
@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
 
         //Creating a rest adapter
         RestAdapter adapter = new RestAdapter.Builder()
+                .setLogLevel(RestAdapter.LogLevel.FULL)
                 .setEndpoint(BASE_URL)
                 .build();
 

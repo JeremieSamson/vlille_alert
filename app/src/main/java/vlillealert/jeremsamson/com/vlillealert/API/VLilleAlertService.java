@@ -13,6 +13,6 @@ public interface VLilleAlertService {
     /*Retrofit get annotation with our URL
        And our method that will return us the list ob Book
     */
-    @GET("/stations")
+    @GET("/api/stations")
     public void getStations(Callback<List<Station>> response);
 }
