@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">VLille Alert</string>
     <string name="action_settings">Settings</string>
+
+    <string name="adress">Adress</string>
+    <string name="bikes">Bikes</string>
+    <string name="attachs">Attachs</string>
+    <string name="paiment">Paiement</string>
+    <string name="lastupd">Dernière mise à jours</string>
 </resources>

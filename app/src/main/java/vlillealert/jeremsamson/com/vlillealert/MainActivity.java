@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -30,8 +32,9 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
     public static final String KEY_STATION_BIKES = "key_station_bikes";
     public static final String KEY_STATION_ATTACHS = "key_station_attachs";
 
-    //List view to show data
-    private ListView listView;
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     //List of type Stations this list will store type Station which is our data model
     private List<Station> Stations;
@@ -42,13 +45,14 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
         setContentView(R.layout.activity_main);
 
         //Initializing the listview
-        listView = (ListView) findViewById(R.id.listViewStations);
+        mRecyclerView = (RecyclerView) findViewById(R.id.listViewStations);
+
+        // use a linear layout manager
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
 
         //Calling the method that will fetch data
         getStations();
-
-        //Setting onItemClickListener to listview
-        listView.setOnItemClickListener(this);
     }
 
     private void getStations(){
@@ -68,8 +72,6 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
         api.getStations(new Callback<List<Station>>() {
             @Override
             public void success(List<Station> list, Response response) {
-                Log.d("success", "coooool");
-
                 //Dismissing the loading progressbar
                 loading.dismiss();
 
@@ -89,20 +91,9 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
 
     //Our method to show list
     private void showList(){
-        //String array to store all the Station names
-        String[] items = new String[Stations.size()];
-
-        //Traversing through the whole list to get all the names
-        for(int i=0; i<Stations.size(); i++){
-            //Storing names to string array
-            items[i] = Stations.get(i).getAdress();
-        }
-
-        //Creating an array adapter for list view
-        ArrayAdapter adapter = new ArrayAdapter<String>(this,R.layout.simple_list,items);
-
-        //Setting adapter to listview
-        listView.setAdapter(adapter);
+        // specify an adapter (see also next example)
+        mAdapter = new RecyclerViewAdaptater(Stations, getResources());
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     //This method will execute on listitem click
