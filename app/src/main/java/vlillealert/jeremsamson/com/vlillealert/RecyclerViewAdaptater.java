@@ -31,6 +31,8 @@ public class RecyclerViewAdaptater  extends RecyclerView.Adapter<RecyclerViewAda
         holder.stationBikes.setText(resources.getString(R.string.bikes) + ' ' + station.getBikes());
         holder.stationAttachs.setText(resources.getString(R.string.attachs) + ' ' + station.getAttachs());
         holder.stationPaiement.setText(resources.getString(R.string.paiment) + ' ' + station.getPaiement());
+
+
         holder.stationLastupd.setText(resources.getString(R.string.lastupd) + ' ' + station.getLastupd());
     }
 

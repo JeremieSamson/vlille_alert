@@ -20,24 +20,21 @@ import java.util.List;
 
 import vlillealert.jeremsamson.com.vlillealert.API.VLilleAlertService;
 import vlillealert.jeremsamson.com.vlillealert.Bean.Station;
+import vlillealert.jeremsamson.com.vlillealert.DB.DBHandler;
 
 public class MainActivity extends AppCompatActivity implements ListView.OnItemClickListener {
 
     public static final String BASE_URL = "http://ns378858.ip-5-196-69.eu/app.php";
     //public static final String BASE_URL = "http://ns378858.ip-5-196-69.eu/app.php/stations?_format=json";
 
-    //Strings to bind with intent will be used to send data to other activity
-    public static final String KEY_STATION_ID = "key_station_id";
-    public static final String KEY_STATION_ADRESS = "key_station_adress";
-    public static final String KEY_STATION_BIKES = "key_station_bikes";
-    public static final String KEY_STATION_ATTACHS = "key_station_attachs";
-
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
     //List of type Stations this list will store type Station which is our data model
-    private List<Station> Stations;
+    private List<Station> stationList;
+
+    private DBHandler db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,10 +49,30 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         //Calling the method that will fetch data
-        getStations();
+        showList();
     }
 
-    private void getStations(){
+    private void showList(){
+        db = new DBHandler(this);
+
+        if (db.hasBeenInitialised()) {
+            Log.d("info", "Loading from DB");
+
+            //load from database
+            stationList = db.getAllStations();
+        } else {
+            Log.d("info", "Loading from API");
+
+            //load from API
+            loadFromAPI();
+        }
+
+        // specify an adapter (see also next example)
+        mAdapter = new RecyclerViewAdaptater(stationList, getResources());
+        mRecyclerView.setAdapter(mAdapter);
+    }
+
+    private void loadFromAPI() {
         //While the app fetched data we are displaying a progress dialog
         final ProgressDialog loading = ProgressDialog.show(this,"Fetching Data","Please wait...",false,false);
 
@@ -76,7 +93,10 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
                 loading.dismiss();
 
                 //Storing the data in our list
-                Stations = list;
+                stationList = list;
+
+                //Inserting all stations in DB
+                db.init(stationList);
 
                 //Calling a method to show the list
                 showList();
@@ -89,13 +109,6 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
         });
     }
 
-    //Our method to show list
-    private void showList(){
-        // specify an adapter (see also next example)
-        mAdapter = new RecyclerViewAdaptater(Stations, getResources());
-        mRecyclerView.setAdapter(mAdapter);
-    }
-
     //This method will execute on listitem click
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -103,13 +116,13 @@ public class MainActivity extends AppCompatActivity implements ListView.OnItemCl
         Intent intent = new Intent(this, ShowStationDetail.class);
 
         //Getting the requested Station from the list
-        Station Station = Stations.get(position);
+        Station Station = stationList.get(position);
 
         //Adding Station details to intent
-        intent.putExtra(KEY_STATION_ID,Station.getStationid());
-        intent.putExtra(KEY_STATION_ADRESS,Station.getAdress());
-        intent.putExtra(KEY_STATION_BIKES,Station.getBikes());
-        intent.putExtra(KEY_STATION_ATTACHS,Station.getAttachs());
+        intent.putExtra(DBHandler.KEY_STATION_ID,Station.getStationid());
+        intent.putExtra(DBHandler.KEY_STATION_ADRESS,Station.getAdress());
+        intent.putExtra(DBHandler.KEY_STATION_BIKES,Station.getBikes());
+        intent.putExtra(DBHandler.KEY_STATION_ATTACHS,Station.getAttachs());
 
         //Starting another activity to show Station details
         startActivity(intent);

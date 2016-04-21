@@ -1,6 +1,12 @@
 package vlillealert.jeremsamson.com.vlillealert.Bean;
 
+import android.util.Log;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import javax.annotation.Generated;
 
@@ -19,6 +25,9 @@ public class Station {
     private Double lng;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
+    public Station() {
+
+    }
     /**
      *
      * @return
@@ -133,6 +142,17 @@ public class Station {
      * The lastupd
      */
     public String getLastupd() {
+        Date date = null;
+        String formattedDate = "";
+
+        try {
+            Log.d("info", lastupd);
+            date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssz").parse(lastupd);
+            return new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault()).format(date);
+        } catch (ParseException e) {
+            Log.d("failure", e.toString());
+        }
+
         return lastupd;
     }
 

@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import vlillealert.jeremsamson.com.vlillealert.DB.DBHandler;
+
 public class ShowStationDetail extends AppCompatActivity {
 
     //Defining views
@@ -29,9 +31,9 @@ public class ShowStationDetail extends AppCompatActivity {
         Intent intent = getIntent();
 
         //Displaying values by fetching from intent
-        textViewStationId.setText(String.valueOf(intent.getIntExtra(MainActivity.KEY_STATION_ID, 0)));
-        textViewStationAdress.setText(intent.getStringExtra(MainActivity.KEY_STATION_ADRESS));
-        textViewStationBikes.setText(intent.getStringExtra(MainActivity.KEY_STATION_BIKES));
-        textViewStationAttachs.setText(String.valueOf(intent.getIntExtra(MainActivity.KEY_STATION_ATTACHS,0)));
+        textViewStationId.setText(String.valueOf(intent.getIntExtra(DBHandler.KEY_STATION_ID, 0)));
+        textViewStationAdress.setText(intent.getStringExtra(DBHandler.KEY_STATION_ADRESS));
+        textViewStationBikes.setText(intent.getStringExtra(DBHandler.KEY_STATION_BIKES));
+        textViewStationAttachs.setText(String.valueOf(intent.getIntExtra(DBHandler.KEY_STATION_ATTACHS,0)));
     }
 }
